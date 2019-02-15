@@ -28,12 +28,12 @@ public class AspectTest {
     /**
      * 统计点击耗时
      */
-    @Around("execution(* com.example.aspectj.MainActivity.initClickListener(..))")
-    public void method2(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @Around("execution(* android.view.View.OnClickListener.onClick(..))")
+    public void countTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis();
-        Log.e("zhangyunpeng", String.valueOf((end - start)));
+        Log.e("countTime", String.valueOf((end - start)));
     }
 
     @Before("execution(* *..MainActivity.on**(..))")
