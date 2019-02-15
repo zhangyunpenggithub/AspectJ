@@ -2,9 +2,12 @@ package com.example.aspectj;
 
 import android.util.Log;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 
 /**
  * +----------------------------------------------------------------------
@@ -25,11 +28,20 @@ public class AspectTest {
     /**
      * 统计点击耗时
      */
-    @Around("call(com.example.aspectj.MainActivity.initClickListener(..))")
-    public void method(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @Around("execution(* com.example.aspectj.MainActivity.initClickListener(..))")
+    public void method2(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis();
         Log.e("zhangyunpeng", String.valueOf((end - start)));
+    }
+
+    @Before("execution(* *..MainActivity.on**(..))")
+    public void method(JoinPoint joinPoint){
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        String className = joinPoint.getThis().getClass().getSimpleName();
+
+        Log.e("zhangyunpeng", "class:" + className);
+        Log.e("zhangyunpeng", "method:" + methodSignature.getName());
     }
 }
